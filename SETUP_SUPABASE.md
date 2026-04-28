@@ -96,7 +96,8 @@ CREATE POLICY "Enable delete for all users"
 ### 7. Vérifier la Connexion
 
 Dans l'app, vérifiez :
-1. Allez  à la page "Add Seller"
+
+1. Allez à la page "Add Seller"
 2. L'app devrait pouvoir :
    - Afficher un formulaire vide
    - Créer les vendeurs
@@ -107,11 +108,13 @@ Si erreur "PGRST", vérifiez les clés d'API.
 ## Environnement de Développement vs Production
 
 ### Développement (Actuel)
+
 - RLS désactivé pour chaque table
 - Accès public au bucket
 - Clé anon exposée dans code (usage interne seulement !)
 
 ### Production (À faire)
+
 - Implémenter GoTrue pour authentification utilisateur
 - Configurer RLS policies strictes
 - Utiliser clé avec permissions limitées
@@ -120,15 +123,19 @@ Si erreur "PGRST", vérifiez les clés d'API.
 ## Dépannage
 
 ### Error: "PGRST" ou "Unauthorized"
+
 → Vérifiez les clés Supabase dans SecretConfig.kt
 
 ### Images ne s'affichent pas
+
 → Vérifiez que le bucket est **public** et les CORS sont activés
 
 ### Erreur insertion vendeur
+
 → Vérifiez la table "sellers" existe et RLS permet les inserts
 
 ### Crash lors de suppression
+
 → Vérifiez seller.id n'est pas null et la policy permet les deletes
 
 ## Architecture Supabase
