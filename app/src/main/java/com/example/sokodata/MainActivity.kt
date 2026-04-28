@@ -9,7 +9,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.sokodata.ui.screens.SellerListScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.sokodata.ui.navigation.SokoDataNavGraph
 import com.example.sokodata.ui.theme.SokoDataTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,18 +19,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SokoDataTheme {
+                val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) {
-                    SellerListScreen(
-                        onAddSeller = { 
-                            // TODO: Naviguer vers l'écran d'ajout
-                        },
-                        onSellerClick = { seller ->
-                            // TODO: Afficher les détails du vendeur
-                        },
-                        onNavigateToEdit = { seller ->
-                            // TODO: Naviguer vers l'écran d'édition
-                        }
-                    )
+                    SokoDataNavGraph(navController = navController)
                 }
             }
         }
@@ -40,6 +32,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainActivityPreview() {
     SokoDataTheme {
-        SellerListScreen()
+        val navController = rememberNavController()
+        SokoDataNavGraph(navController = navController)
     }
 }
+
