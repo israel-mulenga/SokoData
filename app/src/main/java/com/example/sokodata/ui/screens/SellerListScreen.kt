@@ -2,6 +2,7 @@ package com.example.sokodata.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -30,7 +31,7 @@ import com.example.sokodata.model.Seller
 import com.example.sokodata.viewmodel.SellerViewModel
 
 /**
- * Écran principal affichant la liste des vendeurs
+ * Écran principal affichant la liste des vendeurs avec barre de recherche
  */
 @Composable
 fun SellerListScreen(
@@ -42,6 +43,7 @@ fun SellerListScreen(
     val sellers = viewModel.filteredSellers.collectAsState().value
     val isLoading = viewModel.isLoading.collectAsState().value
     val errorMessage = viewModel.errorMessage.collectAsState().value
+    val searchQuery = viewModel.searchQuery.collectAsState().value
     val snackbarHostState = remember { SnackbarHostState() }
 
     // Afficher l'erreur dans la snackbar
@@ -64,52 +66,67 @@ fun SellerListScreen(
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            when {
-                isLoading -> {
-                    // Afficher le chargement
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-                sellers.isEmpty() -> {
-                    // Message vide
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "Aucun vendeur enregistré",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-                else -> {
-                    // Grille de vendeurs
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 8.dp),
-                        contentPadding = PaddingValues(vertical = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(sellers) { seller ->
-                            SellerCard(
-                                seller = seller,
-                                onClick = { onNavigateToEdit(it) }
+            // Barre de recherche
+            SellerSearchBar(
+                query = searchQuery,
+                onQueryChange = { viewModel.updateSearchQuery(it) }
+            )
+
+            // Contenu principal
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                when {
+                    isLoading -> {
+                        // Afficher le chargement
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colorScheme.primary
                             )
+                        }
+                    }
+                    sellers.isEmpty() -> {
+                        // Message vide
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = if (searchQuery.isEmpty()) 
+                                    "Aucun vendeur enregistré" 
+                                else 
+                                    "Aucun vendeur trouvé avec \"$searchQuery\"",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                    else -> {
+                        // Grille de vendeurs
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 8.dp),
+                            contentPadding = PaddingValues(vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(sellers) { seller ->
+                                SellerCard(
+                                    seller = seller,
+                                    onClick = { onNavigateToEdit(it) }
+                                )
+                            }
                         }
                     }
                 }
@@ -117,3 +134,4 @@ fun SellerListScreen(
         }
     }
 }
+
