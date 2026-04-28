@@ -13,6 +13,8 @@ ktor = "2.3.11"
 coil = "2.6.0"
 navigation = "2.7.7"
 serialization = "1.6.3"
+permissionX = "1.7.1"
+materialIcons = "1.5.4"
 
 
 [libraries]
@@ -42,6 +44,12 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 # UI & Navigation
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+
+# Permissions
+androidx-permissionx = { group = "androidx.permissionx", name = "permissionx", version.ref = "permissionX" }
+
+# Material Icons
+androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIcons" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
