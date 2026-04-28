@@ -5,12 +5,14 @@
 ### 📋 Checklist Complète
 
 #### Phase 1: Configuration de Base
+
 - ✅ Permissions Android ajoutées (INTERNET, CAMERA, READ/WRITE_EXTERNAL_STORAGE)
 - ✅ SecretConfig.kt configuré avec clés Supabase
 - ✅ Dépendances Gradle mises à jour
 - ✅ PermissionX et Material Icons intégrés
 
 #### Phase 2: Architecture MVVM
+
 - ✅ Model: Seller data class avec @Serializable
 - ✅ ReferenceRepository Pattern avec interface et implémentation
 - ✅ Repository: CRUD complet avec Supabase SDK
@@ -18,6 +20,7 @@
 - ✅ State Hoisting: aucune logique métier dans les composables
 
 #### Phase 3: Design Material 3
+
 - ✅ Palette couleur complète (Teal/Green/Orange)
 - ✅ Light + Dark theme configurés
 - ✅ Typographie 10 styles (Display → Label)
@@ -25,6 +28,7 @@
 - ✅ Shapes arrondis cohérents
 
 #### Phase 4: Interface Utilisateur (Compose)
+
 - ✅ SellerListScreen: Grille 2 colonnes avec LazyVerticalGrid
 - ✅ SellerCard: Composable réutilisable avec image
 - ✅ SellerSearchBar: Filtrage réactif en temps réel
@@ -34,6 +38,7 @@
 - ✅ ErrorHandling: SnackbarsHostState pour messages
 
 #### Phase 5: Gestion Médias
+
 - ✅ Capture caméra via TakePicturePreview
 - ✅ Sélection galerie via GetContent
 - ✅ Conversion ByteArray pour upload
@@ -41,6 +46,7 @@
 - ✅ Upload Supabase Storage + URLs publiques
 
 #### Phase 6: Navigation
+
 - ✅ Compose Navigation avec NavHostController
 - ✅ Routes définies (seller_list, add_seller, edit_seller/{id})
 - ✅ Passage paramètres via ViewModel selection
@@ -48,6 +54,7 @@
 - ✅ Logs erreurs pour débogage
 
 #### Phase 7: Documentation
+
 - ✅ README.md complet (architecture, setup, usage)
 - ✅ SETUP_SUPABASE.md (guide étape par étape)
 - ✅ Code comments et docstrings
@@ -55,15 +62,15 @@
 
 ### 📊 Statistiques du Projet
 
-| Métrique | Valeur |
-|----------|--------|
-| **Fichiers Kotlin** | 16 |
-| **Composables** | 10+ |
-| **StateFlow** | 7 |
-| **Commits** | 11 |
-| **Dépendances** | 25+ |
-| **Écrans** | 4 (List, Add, Edit, Dialog) |
-| **Permissions** | 4 |
+| Métrique            | Valeur                      |
+| ------------------- | --------------------------- |
+| **Fichiers Kotlin** | 16                          |
+| **Composables**     | 10+                         |
+| **StateFlow**       | 7                           |
+| **Commits**         | 11                          |
+| **Dépendances**     | 25+                         |
+| **Écrans**          | 4 (List, Add, Edit, Dialog) |
+| **Permissions**     | 4                           |
 
 ### 📁 Structure Finale du Projet
 
@@ -107,6 +114,7 @@ app/
 ### 🚀 Comment Utiliser
 
 1. **Cloner le projet**
+
    ```bash
    git clone <repo-url>
    cd SokoData
@@ -127,15 +135,15 @@ app/
 
 ### 🎯 Fonctionnalités Principales
 
-| Fonctionnalité | Statut | Détails |
-|---|---|---|
-| **Create** ✅ | Complet | Form + photos caméra/galerie |
-| **Read** ✅ | Complet | Grille 2 col avec Coil images |
-| **Update** ✅ | Complet | Edit form pour chaque vendeur |
-| **Delete** ✅ | Complet | Dialog confirmation Material |
-| **Search** ✅ | Complet | Filtrage réactif nom/table |
-| **Images** ✅ | Complet | Upload Storage + display |
-| **UI/UX** ✅ | Complet | Material Design 3 |
+| Fonctionnalité | Statut  | Détails                       |
+| -------------- | ------- | ----------------------------- |
+| **Create** ✅  | Complet | Form + photos caméra/galerie  |
+| **Read** ✅    | Complet | Grille 2 col avec Coil images |
+| **Update** ✅  | Complet | Edit form pour chaque vendeur |
+| **Delete** ✅  | Complet | Dialog confirmation Material  |
+| **Search** ✅  | Complet | Filtrage réactif nom/table    |
+| **Images** ✅  | Complet | Upload Storage + display      |
+| **UI/UX** ✅   | Complet | Material Design 3             |
 
 ### 🔧 Technologie
 
