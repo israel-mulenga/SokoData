@@ -44,9 +44,9 @@ class SellerRepositoryImpl : SellerRepository {
                 // Créer un objet avec les champs à mettre à jour
                 val updateData = mapOf(
                     "name" to seller.name,
-                    "tableNumber" to seller.tableNumber,
+                    "tablenumber" to seller.tableNumber,
                     "category" to seller.category,
-                    "imageUrl" to seller.imageUrl
+                    "imageurl" to seller.imageUrl
                 ).filterValues { it != null }
                 
                 client.postgrest["sellers"].update(updateData) {
