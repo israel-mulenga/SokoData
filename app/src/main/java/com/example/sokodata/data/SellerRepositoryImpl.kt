@@ -38,15 +38,23 @@ class SellerRepositoryImpl : SellerRepository {
         }
     }
 
-    override suspend fun updateSeller(seller: Seller): Boolean {
+    override suspend fun updateSeller(seller: Seller, imageBytes: ByteArray?): Boolean {
         return try {
+            var imageUrl: String? = seller.imageUrl
+
+            if (imageBytes != null) {
+                val bucket = client.storage.from("seller_images")
+                val fileName = "${UUID.randomUUID()}.jpg"
+                bucket.upload(fileName, imageBytes)
+                imageUrl = bucket.publicUrl(fileName)
+            }
+
             seller.id?.let { id ->
-                // Créer un objet avec les champs à mettre à jour
                 val updateData = mapOf(
                     "name" to seller.name,
                     "tablenumber" to seller.tableNumber,
                     "category" to seller.category,
-                    "imageurl" to seller.imageUrl
+                    "imageurl" to imageUrl
                 ).filterValues { it != null }
                 
                 client.postgrest["sellers"].update(updateData) {

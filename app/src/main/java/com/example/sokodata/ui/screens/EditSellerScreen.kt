@@ -17,6 +17,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import android.Manifest
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Image
@@ -38,10 +45,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.sokodata.model.Seller
@@ -58,12 +67,56 @@ fun EditSellerScreen(
     onNavigateBack: () -> Unit = {},
     onDelete: (String) -> Unit = {}
 ) {
+    val context = LocalContext.current
     var name by remember { mutableStateOf(seller.name) }
     var tableNumber by remember { mutableStateOf(seller.tableNumber) }
     var category by remember { mutableStateOf(seller.category) }
-    var imageUrl by remember { mutableStateOf(seller.imageUrl) }
+    var photoBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var photoUrl by remember { mutableStateOf(seller.imageUrl) }
+    var photoBytes by remember { mutableStateOf<ByteArray?>(null) }
     var isSaving by remember { mutableStateOf(false) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview()
+    ) { bitmap ->
+        if (bitmap != null) {
+            photoBitmap = bitmap
+            val outputStream = java.io.ByteArrayOutputStream()
+            bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 90, outputStream)
+            photoBytes = outputStream.toByteArray()
+            photoUrl = null
+        }
+    }
+
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            cameraLauncher.launch()
+        } else {
+            Toast.makeText(context, "Permission caméra requise", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            try {
+                val inputStream = context.contentResolver.openInputStream(uri)
+                inputStream?.use {
+                    val bytes = it.readBytes()
+                    photoBytes = bytes
+                    photoBitmap = null
+                    photoUrl = uri.toString()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(context, "Impossible de charger l'image", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     if (showDeleteConfirm) {
         DeleteConfirmationDialog(
@@ -106,33 +159,44 @@ fun EditSellerScreen(
                     .height(200.dp)
                     .background(MaterialTheme.colorScheme.surfaceVariant)
                     .clip(RoundedCornerShape(12.dp))
-                    .clickable { /* TODO: Ouvrir la galerie */ },
+                    .clickable { galleryLauncher.launch("image/*") },
                 contentAlignment = Alignment.Center
             ) {
-                if (!imageUrl.isNullOrEmpty()) {
-                    AsyncImage(
-                        model = imageUrl,
-                        contentDescription = "Photo du vendeur",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                } else {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Icon(
-                            Icons.Default.Image,
-                            contentDescription = "Ajouter une photo",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(16.dp)
+                when {
+                    photoBitmap != null -> {
+                        androidx.compose.foundation.Image(
+                            bitmap = photoBitmap!!.asImageBitmap(),
+                            contentDescription = "Photo capturée",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
-                        Text(
-                            text = "Appuyer pour modifier la photo",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                    }
+                    !photoUrl.isNullOrEmpty() -> {
+                        AsyncImage(
+                            model = photoUrl,
+                            contentDescription = "Photo du vendeur",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
+                    }
+                    else -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Icon(
+                                Icons.Default.Image,
+                                contentDescription = "Ajouter une photo",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(16.dp)
+                            )
+                            Text(
+                                text = "Appuyer pour modifier la photo",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
                 }
             }
@@ -143,7 +207,19 @@ fun EditSellerScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Button(
-                    onClick = { /* TODO: Ouvrir caméra */ },
+                    onClick = {
+                        when (PackageManager.PERMISSION_GRANTED) {
+                            ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.CAMERA
+                            ) -> {
+                                cameraLauncher.launch(null)
+                            }
+                            else -> {
+                                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp),
@@ -156,7 +232,7 @@ fun EditSellerScreen(
                 }
 
                 Button(
-                    onClick = { /* TODO: Ouvrir galerie */ },
+                    onClick = { galleryLauncher.launch("image/*") },
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp),
@@ -234,9 +310,9 @@ fun EditSellerScreen(
                                 name = name,
                                 tableNumber = tableNumber,
                                 category = category,
-                                imageUrl = imageUrl
+                                imageUrl = seller.imageUrl
                             )
-                            viewModel.updateSeller(updatedSeller)
+                            viewModel.updateSeller(updatedSeller, photoBytes)
                             isSaving = false
                             onNavigateBack()
                         }

@@ -112,11 +112,11 @@ class SellerViewModel(private val repository: SellerRepository = SellerRepositor
     /**
      * Met à jour un vendeur existant
      */
-    fun updateSeller(seller: Seller) {
+    fun updateSeller(seller: Seller, imageBytes: ByteArray? = null) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val success = repository.updateSeller(seller)
+                val success = repository.updateSeller(seller, imageBytes)
                 if (success) {
                     loadAllSellers()
                     _selectedSeller.value = null
