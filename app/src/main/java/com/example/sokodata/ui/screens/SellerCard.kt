@@ -47,7 +47,7 @@ fun SellerCard(
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spaceBetween
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
             // Image du vendeur
             Box(

@@ -221,7 +221,7 @@ fun EditSellerScreen(
                         .weight(1f)
                         .height(48.dp),
                     colors = ButtonDefaults.outlinedButtonColors(),
-                    border = androidx.compose.material3.BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
                 ) {
                     Text("Annuler")
                 }

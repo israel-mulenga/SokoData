@@ -99,7 +99,7 @@ fun CameraPhotoCapture(
 
     fun openCamera() {
         try {
-            cameraLauncher.launch()
+            cameraLauncher.launch(null)
         } catch (e: Exception) {
             e.printStackTrace()
         }

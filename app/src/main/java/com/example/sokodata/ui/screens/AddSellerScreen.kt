@@ -1,10 +1,14 @@
 package com.example.sokodata.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,8 +46,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.sokodata.model.Seller
@@ -59,6 +65,7 @@ fun AddSellerScreen(
     viewModel: SellerViewModel = viewModel(),
     onNavigateBack: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     var name by remember { mutableStateOf("") }
     var tableNumber by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
@@ -72,6 +79,17 @@ fun AddSellerScreen(
     ) { bitmap ->
         if (bitmap != null) {
             photoBitmap = bitmap
+        }
+    }
+
+    // Permission launcher for camera
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            cameraLauncher.launch()
+        } else {
+            Toast.makeText(context, "Permission caméra requise", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -162,7 +180,19 @@ fun AddSellerScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Button(
-                    onClick = { cameraLauncher.launch() },
+                    onClick = {
+                        when (PackageManager.PERMISSION_GRANTED) {
+                            ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.CAMERA
+                            ) -> {
+                                cameraLauncher.launch()
+                            }
+                            else -> {
+                                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp),
@@ -240,7 +270,7 @@ fun AddSellerScreen(
                         .weight(1f)
                         .height(48.dp),
                     colors = ButtonDefaults.outlinedButtonColors(),
-                    border = androidx.compose.material3.BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
                 ) {
                     Text("Annuler")
                 }
@@ -275,4 +305,3 @@ fun AddSellerScreen(
         }
     }
 }
-
