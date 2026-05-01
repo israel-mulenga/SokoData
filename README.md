@@ -14,12 +14,12 @@ Cette solution remplace les registres physiques par un système numérique robus
 
 ##  Fonctionnalités Principales
 
- **CRUD Complet** - Créer, lire, modifier, supprimer des vendeurs
-**Identification Visuelle** - Capture et affichage des photos des étalages
-**Recherche Dynamique** - Filtrage réactif en temps réel par nom/numéro
-**Synchronisation Cloud** - Supabase pour les données et images
-**Material Design 3** - Interface moderne et professionnelle
-**Responsive** - Optimisée pour utilisation sur le terrain
+- **CRUD Complet** - Créer, lire, modifier, supprimer des vendeurs
+- **Identification Visuelle** - Capture et affichage des photos des étalages
+- **Recherche Dynamique** - Filtrage réactif en temps réel par nom/numéro
+- **Synchronisation Cloud** - Supabase pour les données et images
+- **Material Design 3** - Interface moderne et professionnelle
+- **Responsive** - Optimisée pour utilisation sur le terrain
 
 ## Architecture MVVM + State Hoisting
 
@@ -198,7 +198,7 @@ L'application requiert les permissions suivantes dans `AndroidManifest.xml`:
 
 Les permissions sont gérées au runtime avec `PermissionX`.
 
-## 📡 Intégration Supabase
+## Intégration Supabase
 
 ### Authentification
 
@@ -282,11 +282,7 @@ fun SellerListPreview() {
    - Cliquer "Supprimer"
    - Confirmer → Suppression instant
 
-## Vidéo Tutorielle (3-5 min)
 
-### Contenu attendu
-- **3 min** : Explication architecture + code
-- **2 min** : Démo complète CRUD + recherche
 
 ## Build & Deployment
 
