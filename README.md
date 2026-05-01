@@ -2,7 +2,7 @@
 
 **Application mobile Android native pour gérer les vendeurs d'un marché local**
 
-## 📱 Aperçu du Projet
+##  Aperçu du Projet
 
 SokoData est une application Android native conçue pour moderniser la gestion et le recensement des vendeurs dalam de grands espaces commerciaux tels que les marchés municipaux.
 
@@ -12,16 +12,16 @@ Cette solution remplace les registres physiques par un système numérique robus
 - **Rechercher instantanément** par nom ou numéro de table
 - **Synchroniser les données** en temps réel avec le cloud
 
-## 🎯 Fonctionnalités Principales
+##  Fonctionnalités Principales
 
-✅ **CRUD Complet** - Créer, lire, modifier, supprimer des vendeurs
-✅ **Identification Visuelle** - Capture et affichage des photos des étalages
-✅ **Recherche Dynamique** - Filtrage réactif en temps réel par nom/numéro
-✅ **Synchronisation Cloud** - Supabase pour les données et images
-✅ **Material Design 3** - Interface moderne et professionnelle
-✅ **Responsive** - Optimisée pour utilisation sur le terrain
+ **CRUD Complet** - Créer, lire, modifier, supprimer des vendeurs
+**Identification Visuelle** - Capture et affichage des photos des étalages
+**Recherche Dynamique** - Filtrage réactif en temps réel par nom/numéro
+**Synchronisation Cloud** - Supabase pour les données et images
+**Material Design 3** - Interface moderne et professionnelle
+**Responsive** - Optimisée pour utilisation sur le terrain
 
-## 🏗️ Architecture MVVM + State Hoisting
+## Architecture MVVM + State Hoisting
 
 ### Structure du Projet
 
@@ -78,7 +78,7 @@ EditSellerScreen
     └── Appelle viewModel.deleteSeller()
 ```
 
-## 🔧 Technologie & Dépendances
+## Technologie & Dépendances
 
 | Technologie | Version | Utilisation |
 |-------------|---------|------------|
@@ -90,7 +90,7 @@ EditSellerScreen
 | **Coil** | 2.6.0 | Image loading |
 | **Navigation Compose** | 2.7.7 | Routage entre écrans |
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prérequis
 
@@ -141,7 +141,7 @@ EditSellerScreen
    ./gradlew installDebug
    ```
 
-## 📝 Modèle de Données
+## Modèle de Données
 
 ### Seller (Kotlin Data Class)
 
@@ -167,7 +167,7 @@ data class Seller(
 | imageUrl | TEXT | URL publique Supabase Storage |
 | created_at | TIMESTAMP | Timestamp création |
 
-## 🎨 Material Design 3 Theme
+## Material Design 3 Theme
 
 ### Palette Couleur (Marché/Vendeurs)
 
@@ -185,7 +185,7 @@ data class Seller(
 - Scales complètes : Display, Headline, Title, Body, Label
 - Poids: Regular, Medium, SemiBold, Bold
 
-## 🔐 Permissions
+## Permissions
 
 L'application requiert les permissions suivantes dans `AndroidManifest.xml`:
 
@@ -221,7 +221,7 @@ L'implémentation `SellerRepositoryImpl` :
 - Obtient les URLs publiques pour stockage en DB
 - Gère les exceptions et logging
 
-## 🎬 Navigation
+## Navigation
 
 Navigation entre écrans via **Compose Navigation**:
 
@@ -231,7 +231,7 @@ Navigation entre écrans via **Compose Navigation**:
 | `add_seller` | AddSellerScreen | Formulaire d'ajout |
 | `edit_seller/{sellerId}` | EditSellerScreen | Édition + Suppression |
 
-## 🐛 Débogage & Édition
+## Débogage & Édition
 
 ### Logging
 
@@ -255,7 +255,7 @@ fun SellerListPreview() {
 }
 ```
 
-## 📊 Cas d'Utilisation Principaux
+## Cas d'Utilisation Principaux
 
 ### Administrateur au marché
 
@@ -282,13 +282,13 @@ fun SellerListPreview() {
    - Cliquer "Supprimer"
    - Confirmer → Suppression instant
 
-## 🎥 Vidéo Tutorielle (3-5 min)
+## Vidéo Tutorielle (3-5 min)
 
 ### Contenu attendu
 - **3 min** : Explication architecture + code
 - **2 min** : Démo complète CRUD + recherche
 
-## 📦 Build & Deployment
+## Build & Deployment
 
 ### Debug APK
 
@@ -303,20 +303,6 @@ fun SellerListPreview() {
 ./gradlew assembleRelease
 # Signer avec keystore et aligner
 ```
-
-## 🤝 Contributing
-
-Contributions bienvenues ! Pour les modifications majores :
-1. Créer une branche feature
-2. Implémenter en MVVM
-3. Ajouter tests
-4. Faire une PR
-
-## 📄 License
-
-[À définir]
-
-## 👨‍💻 Auteur
 
 SokoData - Projet académique 2025
 
